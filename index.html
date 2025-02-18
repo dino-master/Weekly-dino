@@ -1,0 +1,206 @@
+
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>길드 소식 - 홈</title>
+    <style>
+        /* 기본 라이트모드 스타일 */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+            color: #333;
+            transition: background 0.3s, color 0.3s;
+        }
+        .container {
+            display: flex;
+            flex-direction: row;
+            max-width: 1200px;
+            margin: auto;
+        }
+        .sidebar {
+            width: 250px;
+            background: #2c3e50;
+            color: white;
+            height: 100vh;
+            padding: 20px;
+            box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+        }
+        .sidebar h3 {
+            text-align: center;
+            margin-bottom: 20px;
+            border-bottom: 2px solid white;
+            padding-bottom: 10px;
+        }
+        .sidebar a {
+            display: block;
+            color: white;
+            text-decoration: none;
+            padding: 10px;
+            margin: 5px 0;
+            border-radius: 5px;
+            background: #34495e;
+            text-align: center;
+        }
+        .sidebar a:hover {
+            background: #1abc9c;
+        }
+
+        .main-content {
+            flex: 1;
+            padding: 20px;
+        }
+        .guild-header {
+            background: white;
+            padding: 20px;
+            text-align: center;
+            border-radius: 10px;
+            box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.1);
+        }
+        .guild-header img {
+            width: 100px;
+            border-radius: 50%;
+        }
+        .news-section {
+            background: white;
+            padding: 20px;
+            margin-top: 20px;
+            border-radius: 10px;
+            box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.1);
+        }
+        .footer {
+            text-align: center;
+            padding: 10px;
+            background: #2c3e50;
+            color: white;
+            margin-top: 20px;
+        }
+
+        /* ✅ 다크모드 스타일 */
+        body.dark-mode {
+            background-color: #1e1e1e;
+            color: #f4f4f4;
+        }
+        .dark-mode .guild-header,
+        .dark-mode .news-section {
+            background: #333;
+            color: #f4f4f4;
+        }
+        .dark-mode .sidebar {
+            background: #1b1b1b;
+        }
+        .dark-mode .footer {
+            background: #111;
+        }
+
+        /* ✅ 토글 슬라이더 스타일 */
+        .toggle-container {
+            display: flex;
+            align-items: center;
+            justify-content: right;
+            padding: 10px;
+        }
+        .toggle-label {
+            font-size: 18px;
+            margin-right: 10px;
+        }
+        .toggle-switch {
+            position: relative;
+            width: 50px;
+            height: 25px;
+            background: #ddd;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+        .toggle-switch::before {
+            content: "";
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            background: white;
+            border-radius: 50%;
+            top: 2.5px;
+            left: 3px;
+            transition: transform 0.3s;
+        }
+        .dark-mode .toggle-switch {
+            background: #555;
+        }
+        .dark-mode .toggle-switch::before {
+            transform: translateX(25px);
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ✅ 다크모드 토글 슬라이더 -->
+    <div class="toggle-container">
+        <span class="toggle-label">🌙</span>
+        <div class="toggle-switch" onclick="toggleDarkMode()"></div>
+        <span class="toggle-label">☀</span>
+    </div>
+
+    <div class="container">
+        <!-- 좌측 사이드바 -->
+        <div class="sidebar">
+            <h3>길드 메뉴</h3>
+            <a href="news.html">📜 길드 소식지</a>
+            <a href="members.html">👥 길드원 정보</a>
+            <a href="contact.html">📩 문의 페이지</a>
+        </div>
+
+        <!-- 메인 컨텐츠 -->
+        <div class="main-content">
+            <!-- 길드 정보 -->
+            <div class="guild-header">
+                <img src="guild_icon.png" alt="길드 아이콘">
+                <h1>길드명: 전설의 용사들</h1>
+                <p>길드 소개: 우리는 강하고 멋진 길드입니다! 함께 모험을 떠나요!</p>
+            </div>
+
+            <!-- 길드 소식 최신호 -->
+            <div class="news-section">
+                <h2>📢 최신 길드 소식 (매주 연재)</h2>
+                <p>🔥 새로운 레이드 공략 성공! 길드원들이 드디어 신화 레이드를 공략했습니다!</p>
+                <p>🎉 신규 길드원 환영 이벤트 진행 중! <a href="contact.html">문의 페이지</a>에서 확인하세요.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- 하단 푸터 -->
+    <div class="footer">
+        &copy; 2025 길드 소식 잡지 | 모든 권리 보유
+    </div>
+
+    <!-- ✅ JavaScript (토글 기능) -->
+    <script>
+        function toggleDarkMode() {
+            const body = document.body;
+            const switchElement = document.querySelector(".toggle-switch");
+            
+            // 다크모드 상태 변경
+            body.classList.toggle("dark-mode");
+
+            // 상태 저장 (로컬스토리지)
+            if (body.classList.contains("dark-mode")) {
+                localStorage.setItem("theme", "dark");
+            } else {
+                localStorage.setItem("theme", "light");
+            }
+        }
+
+        // 페이지 로드 시 저장된 테마 적용
+        window.onload = function () {
+            const savedTheme = localStorage.getItem("theme");
+            if (savedTheme === "dark") {
+                document.body.classList.add("dark-mode");
+            }
+        };
+    </script>
+
+</body>
+</html>
