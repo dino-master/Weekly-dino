@@ -1,235 +1,320 @@
-
 <!DOCTYPE html>
 <html lang="ko">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>길드 소식 - 메인 페이지</title>
+    <title>공룡 길드 메인 페이지</title>
     <style>
+        :root {
+            --background-color: #f4f4f4;
+            --text-color: #000;
+            --header-bg: #333;
+            --header-text: white;
+            --toggle-bg: #ccc;
+            --toggle-active: #007bff;
+            --sidebar-bg: #555;
+            --sidebar-hover: #777;
+            --submenu-bg: #777;
+            --submenu-hover: #888;
+            --svg-fill: #000;
+        }
+        
+        .dark-mode {
+            --background-color: #333;
+            --text-color: #fff;
+            --header-bg: #222;
+            --header-text: white;
+            --toggle-bg: #666;
+            --toggle-active: #007bff;
+            --sidebar-bg: #444;
+            --sidebar-hover: #666;
+            --submenu-bg: #555;
+            --submenu-hover: #777;
+            --svg-fill: #fff;
+        }
         body {
             font-family: Arial, sans-serif;
             margin: 0;
             padding: 0;
-            background-color: #f4f4f4;
-            color: #333;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background-color: var(--background-color);
+            color: var(--text-color);
             transition: background 0.3s, color 0.3s;
         }
-
-        /* ✅ 다크모드 스타일 */
-        .dark-mode {
-            background-color: #1e1e1e;
-            color: #f4f4f4;
-        }
-
-        /* ✅ 전체 컨테이너 */
-        .container {
-            max-width: 1200px;
-            margin: auto;
-            padding: 20px;
-        }
-
-        /* ✅ 헤더 스타일 */
-        .header {
+        header {
             display: flex;
             align-items: center;
             justify-content: space-between;
-            padding: 20px;
-            border-bottom: 2px solid #ddd;
+            width: 100%;
+            background: var(--header-bg);
+            color: var(--header-text);
+            padding: 10px 20px;
         }
-
-        .guild-info {
+        .theme-toggle {
             display: flex;
             align-items: center;
+            gap: 10px;
+            flex-direction: row;
+            margin-right: 20px;
         }
-
-        .guild-icon {
-            width: 50px;
-            height: 50px;
-            margin-right: 15px;
+        .dark-mode .theme-toggle img {
+            filter: invert(1);
         }
-
-        .guild-name {
-            font-size: 24px;
-            font-weight: bold;
-        }
-
-        /* ✅ 다크모드 토글 버튼 */
-        .toggle-container {
-            display: flex;
-            align-items: center;
-        }
-
         .toggle-switch {
             position: relative;
-            width: 50px;
-            height: 25px;
-            background: #ddd;
-            border-radius: 50px;
-            cursor: pointer;
-            transition: background 0.3s;
+            display: inline-block;
+            width: 60px;
+            height: 24px;
         }
-
-        .toggle-switch::before {
-            content: "";
+        .toggle-switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
             position: absolute;
-            width: 20px;
-            height: 20px;
-            background: white;
-            border-radius: 50%;
-            top: 2.5px;
+        }
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: var(--toggle-bg);
+            transition: 0.4s;
+            border-radius: 24px;
+        }
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 18px;
+            width: 18px;
             left: 3px;
-            transition: transform 0.3s ease-in-out;
+            bottom: 3px;
+            background-color: white;
+            transition: 0.4s;
+            border-radius: 50%;
         }
-
-        /* ✅ 다크모드일 때 버튼 이동 (고정) */
-        .dark-mode .toggle-switch {
-            background: #555;
+        input:checked + .slider {
+            background-color: var(--toggle-active);
         }
-
-        .dark-mode .toggle-switch::before {
-            transform: translateX(25px);
+        input:checked + .slider:before {
+            transform: translateX(36px);
         }
-
-        /* ✅ 다크모드 토글 아이콘 */
-        .theme-icon {
-            width: 30px;
-            height: 30px;
-            transition: filter 0.3s ease-in-out;
-            margin: 0 10px;
+        .theme-toggle img:first-child {
+            margin-right: 2px;
         }
-
-        .dark-mode .theme-icon {
-            filter: invert(1) brightness(100%);
+        .theme-toggle img:last-child {
+            margin-left: 2px;
         }
-
-        /* ✅ 사이드바 스타일 */
+        .theme-toggle img {
+            width: 24px;
+            height: 24px;
+            filter: var(--svg-filter);
+            transition: filter 0.3s ease;
+        }
+        header img {
+            display: inline-block;
+            width: 60px;
+            height: 60px;
+            margin-left: 10px;
+        }
+        .header-content {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex-grow: 1; /* 왼쪽 영역을 최대한 확장하여 가운데 정렬 방지 */
+        }
+        header small {
+            position: relative;
+            font-size: 14px;
+            color: #cfcfcf;
+        }
+        header h1 {
+            font-size: 28px;
+            font-weight: bold;
+            margin: 0;
+        }
+        main {
+            display: flex;
+            width: 100%;
+        }
         .sidebar {
-            width: 250px;
-            padding: 20px;
-            border-right: 2px solid #ddd;
+            width: 20%;
+            background: #555;
+            color: white;
         }
-
-        .sidebar a {
-            display: block;
+        .sidebar h3 {
+            margin-top: 10px;
+            margin-left: 10px;
+        }
+        .sidebar ul {
+            list-style: none;
+            padding: 0;
+        }
+        .sidebar ul li {
             padding: 10px;
+            border-bottom: 1px solid #777;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+        .sidebar ul li:hover {
+            background: #777;
+        }
+        .sidebar ul li a {
+            display: block;
+            width: 100%;
+            height: 100%;
             text-decoration: none;
-            color: inherit;
-            transition: background 0.2s;
         }
-
-        .sidebar a:hover {
-            background: #ddd;
+        .submenu {
+            display: none;
+            padding-left: 10px;
+            background: #777;
         }
-
-        .dark-mode .sidebar a:hover {
-            background: #444;
+        .submenu li {
+            padding: 10px;
+            border-bottom: none;
+            text-align: left;
         }
-
-        /* ✅ 메인 콘텐츠 스타일 */
+        .submenu li a {
+            color: white;
+            text-decoration: none;
+        }
+        .submenu li:hover {
+            background: #888;
+        }
         .content {
-            flex-grow: 1;
+            width: 80%;
             padding: 20px;
+            background: var(--toggle-bg);
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
         }
-
-        .latest-news {
-            background: #eee;
-            padding: 20px;
+        .image-container {
+            width: 100%;
+            display: flex;
+            justify-content: center;
+        }
+        .image-container img {
+            max-width: 90%;
             border-radius: 10px;
         }
-
-        .dark-mode .latest-news {
-            background: #333;
-        }
-
-        /* ✅ 푸터 스타일 */
-        .footer {
-            text-align: center;
-            padding: 10px;
-            margin-top: 20px;
-            border-top: 2px solid #ddd;
-        }
-
-        .dark-mode .footer {
-            border-top: 2px solid #444;
-        }
-
-        /* ✅ 레이아웃 스타일 */
-        .main-layout {
+        .content {
             display: flex;
+            flex-direction: column;
+            justify-content: center;
+            gap: 20px;
         }
-
+        .content-wrapper {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            width: 90%;
+            margin: 0 auto;
+        }
+        .content-container {
+            background: var(--toggle-bg);
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            width: 45%;
+        }
+        .content-container h3 {
+            margin: 0 0 10px 0;
+        }
+        .content-container iframe {
+            width: 100%;
+            height: 200px;
+            border: none;
+            background: var(--toggle-bg);
+            border-radius: 5px;
+            color: var(--text-color);
+        }
+        footer {
+            margin-top: 20px;
+            padding: 10px;
+            background: #333;
+            color: white;
+            width: 100%;
+            text-align: center;
+        }
     </style>
-</head>
-<body>
-
-    <!-- ✅ 헤더 -->
-    <header class="header">
-        <div class="guild-info">
-            <img src="assets/guild-icon.svg" alt="길드 아이콘" class="guild-icon">
-            <div class="guild-name">길드명: <span>최강 전사단</span></div>
-        </div>
-
-        <!-- ✅ 다크모드 토글 -->
-        <div class="toggle-container">
-            <img id="light-icon" class="theme-icon" src="assets/light mode.svg" alt="Light Mode Icon">
-            <div id="toggle-btn" class="toggle-switch" onclick="toggleDarkMode()"></div>
-            <img id="dark-icon" class="theme-icon" src="assets/dark mode.svg" alt="Dark Mode Icon">
-        </div>
-    </header>
-
-    <!-- ✅ 메인 레이아웃 -->
-    <div class="container">
-        <div class="main-layout">
-            
-            <!-- ✅ 사이드바 -->
-            <aside class="sidebar">
-                <a href="#">🏠 길드 소식지</a>
-                <a href="#">👥 길드원 정보</a>
-                <a href="#">📩 문의 페이지</a>
-            </aside>
-
-            <!-- ✅ 메인 콘텐츠 -->
-            <main class="content">
-                <h2>길드 최신 소식</h2>
-                <div class="latest-news">
-                    <p>✨ 이번 주 최고의 전투 결과! 길드원들의 전투 기록을 확인하세요.</p>
-                    <p>🏆 길드 랭킹 1위 유지! 보상 및 혜택 안내</p>
-                    <p>📅 다음 길드 이벤트 일정: 3월 15일 오후 8시</p>
-                </div>
-            </main>
-        </div>
-    </div>
-
-    <!-- ✅ 푸터 -->
-    <footer class="footer">
-        <p>© 2025 길드 소식지. All rights reserved.</p>
-    </footer>
-
-    <!-- ✅ JavaScript (토글 기능) -->
     <script>
-        function toggleDarkMode() {
-            const body = document.body;
-            
-            // 다크모드 상태 변경
-            body.classList.toggle("dark-mode");
-
-            // 상태 저장 (로컬스토리지)
-            if (body.classList.contains("dark-mode")) {
-                localStorage.setItem("theme", "dark");
+        function toggleSubmenu() {
+            var submenu = document.getElementById("submenu_lib");
+            if (submenu.style.display === "none" || submenu.style.display === "") {
+                submenu.style.display = "block";
             } else {
-                localStorage.setItem("theme", "light");
+                submenu.style.display = "none";
             }
         }
-
-        // 페이지 로드 시 저장된 테마 적용 (토글 버튼 위치 고정)
-        window.onload = function () {
-            const savedTheme = localStorage.getItem("theme");
-
-            if (savedTheme === "dark") {
+        function toggleDarkMode() {
+            document.body.classList.toggle("dark-mode");
+            let darkModeEnabled = document.body.classList.contains("dark-mode");
+            localStorage.setItem("darkMode", darkModeEnabled);
+            document.getElementById("darkModeToggle").checked = darkModeEnabled;
+        }
+        window.onload = function() {
+            let darkModeSetting = localStorage.getItem("darkMode") === "true";
+            if (darkModeSetting) {
                 document.body.classList.add("dark-mode");
+                document.getElementById("darkModeToggle").checked = true;
             }
         };
     </script>
-
+</head>
+<body>
+    <header>
+        <div class="header-content">
+            <img src='assets/icon_dino.svg' alt="길드 아이콘" width="60" height="60">
+            <div>
+                <small>메이플스토리M 엘리시움 서버</small>
+                <h1>공룡 길드</h1>
+            </div>
+        </div>
+        <div class="theme-toggle">
+            <img src="assets/light mode.svg" alt="Light Mode Icon">
+            <label class="toggle-switch">
+                <input type="checkbox" id="darkModeToggle" onclick="toggleDarkMode()">
+                <span class="slider"></span>
+            </label>
+            <img src="assets/dark mode.svg" alt="Dark Mode Icon">
+        </div>
+    </header>
+    <main>
+        <aside class="sidebar">
+            <h3>메뉴</h3>
+            <ul>
+                <li><a href="#menu1">📰 주간 공룡</a></li>
+                <li><a href="#menu2">👤 길드원</a></li>
+                <li><a href="#menu3">📷 사진첩</a></li>
+                <li onclick="toggleSubmenu()">💾 자료실</li>
+                <ul id="submenu_lib" class="submenu">
+                    <li><a href="#menu4_1">하위 메뉴 1</a></li>
+                    <li><a href="#menu4_2">하위 메뉴 2</a></li>
+                    <li><a href="#menu4_3">하위 메뉴 3</a></li>
+                    <li><a href="#menu4_4">하위 메뉴 4</a></li>
+            </ul>
+        </aside>
+        <section class="content">
+            <div class="image-container">
+                <img src="assets/dino_albums/241229_공룡길드_멤버.png" alt="메인 이미지">
+            </div>
+            <div class="content-wrapper">
+                <div class="content-container">
+                    <h3>📌 공지사항</h3>
+                    <iframe src="assets/main_content/announcement.txt"></iframe>
+                </div>
+                <div class="content-container">
+                    <h3>📢 최신 소식</h3>
+                    <iframe src="assets/main_content/news.txt"></iframe>
+                </div>
+            </div>
+        </section>
+    </main>
+    <footer>
+        <p>&copy; 2025 길드 뉴스. 모든 권리 보유.</p>
+    </footer>
 </body>
 </html>
