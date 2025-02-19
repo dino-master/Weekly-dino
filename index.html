@@ -59,8 +59,14 @@
             flex-direction: row;
             margin-right: 20px;
         }
-        .dark-mode .theme-toggle img {
-            filter: invert(1);
+        .theme-icon {
+            width: 30px;
+            height: 30px;
+            transition: filter 0.3s ease-in-out;
+            margin: 0 10px;
+        }
+        .dark-mode .theme-icon {
+            filter: invert(1) brightness(100%);
         }
         .toggle-switch {
             position: relative;
@@ -274,12 +280,12 @@
             </div>
         </div>
         <div class="theme-toggle">
-            <img src="assets/light mode.svg" alt="Light Mode Icon">
+            <img class="theme-icon" src="assets/light mode.svg" alt="Light Mode Icon">
             <label class="toggle-switch">
                 <input type="checkbox" id="darkModeToggle" onclick="toggleDarkMode()">
                 <span class="slider"></span>
             </label>
-            <img src="assets/dark mode.svg" alt="Dark Mode Icon">
+            <img class="theme-icon" src="assets/dark mode.svg" alt="Dark Mode Icon">
         </div>
     </header>
     <main>
