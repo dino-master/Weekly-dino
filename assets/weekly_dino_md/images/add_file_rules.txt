@@ -1,0 +1,5 @@
+# Editor icon
+filename : icon_editor{id}.png / svg
+
+# Conetents image
+filename : weekly_dino_{docs_no}_image{image_no}.png
