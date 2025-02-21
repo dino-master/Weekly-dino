@@ -226,6 +226,27 @@
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
             width: 45%;
         }
+        /* 모바일 레이아웃 (화면 너비 768px 이하) */
+    @media screen and (max-width: 768px) {
+        .content-wrapper {
+            flex-direction: column; /* 세로 정렬 */
+            align-items: center;
+            width: 100%;
+        }
+    
+        .content-container {
+            width: 90%; /* 모바일에서는 컨테이너를 넓게 설정 */
+            padding: 15px;
+        }
+        h1 {
+            font-size: 1.8rem;
+        }
+        h3 {
+            font-size: 1.4rem;
+        }
+        .content-text {
+            font-size: 1rem;
+        }
         .content-container h3 {
             margin: 0 0 10px 0;
         }
