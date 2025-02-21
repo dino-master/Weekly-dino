@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -296,6 +297,33 @@
                 document.getElementById("darkModeToggle").checked = true;
             }
         };
+        async function loadContent() {
+        const hash = window.location.hash.substring(1);
+        if (!hash) return;
+
+        const contentArea = document.getElementById("content-area");
+
+        // 기존 콘텐츠에 페이드아웃 효과 적용
+        contentArea.style.opacity = "0";
+        
+        try {
+            const response = await fetch("assets/weekly_dino_md/" + hash + ".html");
+            if (!response.ok) throw new Error("콘텐츠를 불러올 수 없습니다.");
+            const text = await response.text();
+
+            // 일정 시간 후 새 콘텐츠 로드 및 페이드인
+            setTimeout(() => {
+                contentArea.innerHTML = text;
+                contentArea.style.opacity = "1";
+            }, 300); // 0.3초 후 전환
+        } catch (error) {
+            console.error(error);
+            contentArea.innerHTML = "<p>콘텐츠를 불러올 수 없습니다.</p>";
+            contentArea.style.opacity = "1";
+        }
+    }
+    window.addEventListener("hashchange", loadContent); // URL 변경 감지
+    window.addEventListener("DOMContentLoaded", loadContent); // 페이지 로드 시 실행
     </script>
 </head>
 <body>
@@ -320,7 +348,7 @@
         <aside class="sidebar">
             <h3>메뉴</h3>
             <ul>
-                <li><a href="#menu1">📰 주간 공룡</a></li>
+                <li><a href="#weekly_dino_1">📰 주간 공룡</a></li>
                 <li><a href="#menu2">👤 길드원</a></li>
                 <li><a href="#menu3">📷 사진첩</a></li>
                 <li onclick="toggleSubmenu()">💾 자료실</li>
@@ -331,7 +359,7 @@
                     <li><a href="#menu4_4">하위 메뉴 4</a></li>
             </ul>
         </aside>
-        <section class="content">
+        <section id="content-area" class="content">
             <div class="image-container">
                 <img src="assets/dino_albums/241229_공룡길드_멤버.png" alt="메인 이미지">
             </div>
@@ -348,7 +376,7 @@
         </section>
     </main>
     <footer>
-        <p>&copy; 2025 길드 뉴스. 모든 권리 보유.</p>
+        <p>&copy; 메이플스토리M 엘리시움 서버 공룡 길드. All rights reserved.</p>
     </footer>
 </body>
 </html>
