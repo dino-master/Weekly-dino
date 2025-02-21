@@ -62,7 +62,7 @@
         .theme-icon {
             width: 30px;
             height: 30px;
-            transition: filter 0.3s ease-in-out;
+            /* transition: filter 0.3s ease-in-out; */
             margin: 0 10px;
         }
         .dark-mode .theme-icon {
@@ -228,12 +228,18 @@
         }
         /* 모바일 레이아웃 (화면 너비 768px 이하) */
     @media screen and (max-width: 768px) {
+        header small {
+                font-size: 1rem;
+                /* padding: 8px 15px; */
+        }
+        .sidebar {
+            font-size: 0.9rem;
+        }
         .content-wrapper {
             flex-direction: column; /* 세로 정렬 */
             align-items: center;
             width: 100%;
         }
-    
         .content-container {
             width: 90%; /* 모바일에서는 컨테이너를 넓게 설정 */
             padding: 15px;
@@ -266,6 +272,7 @@
             width: 100%;
             text-align: center;
         }
+    }
     </style>
     <script>
         function toggleSubmenu() {
